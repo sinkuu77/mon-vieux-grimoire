@@ -26,4 +26,4 @@ app.use((req, res, next) => {
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000);
