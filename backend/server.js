@@ -1,12 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
-const configMongo = require('./dev')
+const configMongo = require('./dev');
 
 const app = express();
+app.use(cors());
 
 mongoose.connect(configMongo.mongoURI,
     { useNewUrlParser: true,
@@ -26,4 +28,5 @@ app.use((req, res, next) => {
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 
-app.listen(process.env.PORT || 3000);
+
+app.listen(4000);
