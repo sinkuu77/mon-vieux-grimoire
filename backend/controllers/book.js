@@ -52,8 +52,12 @@ exports.modifyBook = async(req, res, next) => {
             res.status(401).json({ message: 'Non-autorisé' });
         } else {
             Book.updateOne({ _id: req.params.id }, {...bookObject, _id: req.params.id})
-            .then(() => { res.status(201).json({message: 'Livre modifié !'})})
-            .catch(error => {res.status(401).json({ error })});
+                .then(() => { 
+                    const filenameToRemove = book.imageUrl.split('/images/')[1];
+                    fs.unlink(`./images/${filenameToRemove}`, () => 
+                    res.status(201).json({message: 'Livre modifié !'}))
+                    })
+                .catch(error => {res.status(401).json({ error })})
         };
     } )
     .catch((error) => res.status(400).json({ error }));
