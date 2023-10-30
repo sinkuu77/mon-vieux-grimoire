@@ -40,7 +40,10 @@ exports.createBook = async(req, res, next) => {
 };
 
 exports.modifyBook = async(req, res, next) => {
-    const filename = await convertImg(req.file);
+    let filename;
+    if(req.file) {
+        await convertImg(req.file);
+    };
     const bookObject = req.file ? {
         ...JSON.parse(req.body.book),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${filename}`
