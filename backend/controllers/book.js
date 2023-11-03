@@ -122,6 +122,9 @@ exports.createRating = (req, res, next) => {
                 userId: req.auth.userId,
                 grade: req.body.rating,
             }];
+            const sumOfRatings = book.ratings.reduce(function(acc, obj) {return acc + obj.grade}, 0);
+            book.averageRating = sumOfRatings / book.ratings.length;
+
             book.save()
             .then(() =>{ res.status(201).json(book)})
             .catch(error => {res.status(400).json( { error } )});
