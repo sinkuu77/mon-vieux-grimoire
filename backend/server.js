@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -9,6 +10,7 @@ const userRoutes = require('./routes/user');
 const configMongo = require('./dev');
 
 const app = express();
+app.use(helmet());
 app.use(cors());
 
 mongoose.connect(configMongo.mongoURI,

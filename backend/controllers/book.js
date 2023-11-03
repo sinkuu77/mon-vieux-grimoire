@@ -111,3 +111,22 @@ exports.getBestratingBooks = (req, res, next) => {
     .then(books => res.status(200).json(books))
     .catch(error => res.status(400).json({ error }));
 }
+
+exports.createRating = (req, res, next) => {
+    Book.findOne({ _id: req.params.id })
+    .then(book => {
+        if(book.ratings.some((rating) => rating.userId) == req.auth.userId) {
+            res.status(400).json({ message: 'Rating déjà ajouté !' });
+        } else {
+            book.update(
+                { $push: {"ratings": {
+                    "userId": req.auth.userId,
+                    "grade": req.body.rating,
+                    "_id": Date.now()
+                }}}
+            )
+            .then(() =>{ res.status(201).json({ message: 'Rating enregistré !'})})
+            .catch(error => {res.status(400).json( { error } )});
+        }
+    })
+}
